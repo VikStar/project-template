@@ -6,6 +6,7 @@ var gulp        = require('gulp'),
 	plumber     = require('gulp-plumber'),
 	notify      = require('gulp-notify'),
 	include     = require("gulp-include"),
+	watch       = require('gulp-watch'),
 	runSequence = require('run-sequence'),
 	rimraf      = require('rimraf'),
 	browserSync = require('browser-sync'),
@@ -38,8 +39,8 @@ var path = {
 
 var onError = function(err) {
 	notify.onError({
-		title:    "Gulp error in " + err.plugin,
-		message:  err.toString()
+		title: "Gulp error in " + err.plugin,
+		message: err.toString()
 	})(err);
 	this.emit('end');
 };
@@ -79,11 +80,13 @@ gulp.task('build:js', function(){
 
 gulp.task('build:fonts', function() {
 	return gulp.src(path.src.fonts)
+		.pipe(plumber({ errorHandler: onError }))
 		.pipe(gulp.dest(path.build.fonts));
 });
 
 gulp.task('build:img', function () {
 	return gulp.src(path.src.img)
+		.pipe(plumber({ errorHandler: onError }))
 		.pipe(gulp.dest(path.build.img));
 });
 
@@ -91,16 +94,26 @@ gulp.task('build', [
 	'build:html',
 	'build:style',
 	'build:js',
-	'build:fonts',
 	'build:img',
+	'build:fonts'
 ]);
 
-gulp.task('watch', function() {
-	gulp.watch(path.watch.html,  ['build:html']);
-	gulp.watch(path.watch.style, ['build:style']);
-	gulp.watch(path.watch.js,    ['build:js']);
-	gulp.watch(path.watch.img,   ['build:img']);
-	gulp.watch(path.watch.fonts, ['build:fonts']);
+gulp.task('watch', function(){
+    watch(path.watch.html, function(event, cb) {
+        gulp.start('build:html');
+    });
+    watch(path.watch.style, function(event, cb) {
+        gulp.start('build:style');
+    });
+    watch(path.watch.js, function(event, cb) {
+        gulp.start('build:js');
+    });
+    watch(path.watch.img, function(event, cb) {
+        gulp.start('build:img');
+    });
+    watch(path.watch.fonts, function(event, cb) {
+        gulp.start('build:fonts');
+    });
 });
 
 gulp.task('default', ['clean'], function(cb){
