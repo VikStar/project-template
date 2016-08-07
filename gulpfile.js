@@ -2,10 +2,10 @@
 
 var gulp        = require('gulp'),
 	prefixer    = require('gulp-autoprefixer'),
-	sass        = require('gulp-sass'),
-	plumber     = require('gulp-plumber'),
+	include     = require('gulp-include'),
 	notify      = require('gulp-notify'),
-	include     = require("gulp-include"),
+	plumber     = require('gulp-plumber'),
+	sass        = require('gulp-sass'),
 	watch       = require('gulp-watch'),
 	runSequence = require('run-sequence'),
 	rimraf      = require('rimraf'),
@@ -18,21 +18,21 @@ var path = {
 		js:    'build/js/',
 		style: 'build/css/',
 		img:   'build/img/',
-		fonts: 'build/fonts/',
+		fonts: 'build/fonts/'
 	},
 	watch: {
 		html:  ['src/**/*.html'],
 		js:    ['src/js/**/*.js'],
 		style: ['src/scss/**/*.scss'],
 		img:   ['src/img/**/*.*'],
-		fonts: ['src/fonts/**/*.*'],
+		fonts: ['src/fonts/**/*.*']
 	},
 	src: {
 		html:  ['src/html/*.html'],
 		js:    ['src/js/script.js'],
 		style: ['src/scss/style.scss'],
 		img:   ['src/img/**/*.*'],
-		fonts: ['src/fonts/**/*.*'],
+		fonts: ['src/fonts/**/*.*']
 	},
 	clean: 'build/'
 };
